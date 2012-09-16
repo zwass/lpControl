@@ -1,49 +1,35 @@
 import logging
 import socket
 
+import spotifycontrol as spotify
 
-class StateMachine:
-    STOPPED = 'STOPPED'
-    FORWARD = 'FORWARD'
-    FAST_FORWARD = 'FAST_FORWARD'
-    REVERSE = 'REVERSE'
+from globalvars import (SOCKET_ADDR, STOPPED, FORWARD, FAST_FORWARD, REVERSE)
+from statemachine import StateMachine
 
-    def __init__(self):
-        self.state = self.STOPPED
-        self.prev = [0] * 10 #store 10 values
-
-    def process(self, input):
-        self.prev.pop()
-        self.prev.insert(0, input)
-
-        avg = sum(self.prev) / len(self.prev)
-
-        if avg < 0:
-            self.state = self.REVERSE
-        elif avg == 0:
-            self.state = self.STOPPED
-        elif avg < 1.1:
-            self.state = self.FORWARD
-        else:
-            self.state = self.FAST_FORWARD
-        return self.state
-
-SOCKET_ADDR = ("localhost", 6666)
-
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.bind(SOCKET_ADDR)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(SOCKET_ADDR)
 
 print "Socket bound, waiting for data"
 
-state = StateMachine()
+sm = StateMachine()
+state = sm.state
 
 try:
     while True:
-        data, addr = s.recvfrom(4)
+        data, addr = sock.recvfrom(4)
         floatval = float(data.split("\n")[0])
-        print floatval
-        print state.process(floatval)
+        print sm.process(floatval)
+        new_state = sm.state
+        if state == STOPPED and new_state == FORWARD:
+            spotify.play()
+        elif state != STOPPED and new_state == STOPPED:
+            spotify.pause()
+        elif state != REVERSE and new_state == REVERSE:
+            spotify.prev()
+        elif state != FAST_FORWARD and new_state == FAST_FORWARD:
+            spotify.next()
+        state = new_state
 except:
     logging.exception("recv loop %s", data)
 finally:
-    s.close()
+    sock.close()

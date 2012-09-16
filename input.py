@@ -12,11 +12,12 @@ from math import sqrt
 import pyaudio
 import numpy as np
 
+from globalvars import (SOCKET_ADDR, SAMPLES_PER_SECOND)
+
 #PyAudio setup
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 96000
-SAMPLES_PER_SECOND = 50
 
 chunk_size = RATE / SAMPLES_PER_SECOND
 seconds_per_sample = 1.0 / SAMPLES_PER_SECOND
@@ -85,7 +86,7 @@ def get_relative_velocity(chunk):
     amplitude = get_rms(lchunk)
     if abs(amplitude) < ZERO_AMPLITUDE_THRESHOLD:
         amplitude = 0
-    #print "amplitude = %f" % amplitude
+    logging.debug("amplitude = %f" % amplitude)
 
     if amplitude == 0:
         return 0
@@ -111,7 +112,7 @@ stream = p.open(format = FORMAT,
                 input = True,
                 frames_per_buffer = chunk_size)
 
-print "**waiting for connection**"
+logging.info("**waiting for connection**")
 
 #set up a socket
 SOCKET_ADDR = ("localhost", 6666)
@@ -121,7 +122,7 @@ try:
         try:
             data = stream.read(chunk_size)
             velocity = get_relative_velocity(data)
-            print ("velocity = %f" % velocity)
+            logging.debug(("velocity = %f" % velocity))
             s.sendto(str(velocity) + "\n", SOCKET_ADDR)
         except IOError:
             pass
@@ -130,7 +131,6 @@ except:
     logging.exception("watwat?")
 finally:
     s.close()
-    conn.close()
 
 print "**socket closed**"
 
