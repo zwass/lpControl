@@ -12,6 +12,7 @@ class Spinner(pygame.sprite.Sprite):
         self.orig_image = self.image
 
         self.rotation = 360.0
+        self.min_rotation = 360.0
 
         self.loc = (120, 459) #correct location on phone
 
@@ -32,10 +33,6 @@ class Spinner(pygame.sprite.Sprite):
     def update(self, degrees):
         self.rotation += degrees
         self.rotation = max(29.4, min(self.rotation, 360.0))
-        print self.rotation
+        self.min_rotation = min(self.rotation, self.min_rotation)
+        #print self.rotation
         self.rotate(self.rotation)
-        # # Update every 10 milliseconds = 1/100th of a second.
-        # if self.next_update_time < current_time:
-        #     self.rotate(current_time / 10)
-        #     #self.image = rot_center(self.orig_image, current_time / 10)
-        #     self.next_update_time = current_time + 10
