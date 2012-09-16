@@ -125,10 +125,13 @@ finally:
     sock.close()
 
 if len(number_string) == 10:
-    client = TwilioRestClient()
-    call = client.calls.create(to=number_string,
-                               from_="8653831234",
-                               url="http://demo.brooklynhacker.com/amit.xml")
+    try:
+        client = TwilioRestClient()
+        call = client.calls.create(to=number_string,
+                                   from_="8653831234",
+                                   url="http://demo.brooklynhacker.com/amit.xml")
+    except:
+        pass
     print
     print "Calling..."
-    time.sleep(30)
+    pygame.time.wait(30 * 1000)
