@@ -30,7 +30,8 @@
    =python dialer.py=
 
    Dial a rotary phone by rotation of the record. Rotation of the
-   record is mapped to 1:1 with the virtual phone. Requires PyGame.
+   record is mapped to 1:1 with the virtual phone. Requires PyGame and
+   twilio-python.
 
 * Extending
   Broadcasting velocity information over UDP makes it incredibly easy
