@@ -19,14 +19,16 @@
 
 * Examples
 ** Spotify
-   =python spotify.py=\\
+   =python spotify.py=
+
    Control Spotify as if it were pressed onto vinyl. Drop the needle
    on the record and Spotify begins playing. Scratch backwards to go
    to the previous track. Scratch forwards for the next track. Lift
    the needle and marvel as Spotify pauses.
 
 ** Rotary Phone
-   =python dialer.py=\\
+   =python dialer.py=
+
    Dial a rotary phone by rotation of the record. Rotation of the
    record is mapped to 1:1 with the virtual phone. Requires PyGame.
 
@@ -40,3 +42,5 @@
   demonstrates listening for velocity data, and using that to run a
   state machine detecting qualitative record movement
   (ie. fast-forward, forward, stopped, reverse).
+
+  Please let me know (zachwass2000@gmail.com) if you build something cool!
