@@ -1,0 +1,42 @@
+* lpControl - Bringing that warm analog feel back to your computer
+  lpControl allows you to use an analog record player and timecode
+  record as a computer input device. A server program reads audio
+  input from the record player and sends relative velocity information
+  to listening clients over UDP.
+
+* Requirements
+  - Python 2.7
+  - PyAudio
+  - NumPy
+  - Serato Scratch Live Second Edition Vinyl Record - Available for
+    $15 on Amazon: http://www.amazon.com/Rane-Serato-Scratch-LIVE-Edition/dp/B000KFX0J8/
+  - Stereo audio input (Line in on my Macbook Pro works fine)
+
+* Usage
+  Run the server program with =python server.py=. Now any program can
+  listen for UDP packets on =localhost:6666=. Try one of the example
+  programs.
+
+* Examples
+** Spotify
+   =python spotify.py=\\
+   Control Spotify as if it were pressed onto vinyl. Drop the needle
+   on the record and Spotify begins playing. Scratch backwards to go
+   to the previous track. Scratch forwards for the next track. Lift
+   the needle and marvel as Spotify pauses.
+
+** Rotary Phone
+   =python dialer.py=\\
+   Dial a rotary phone by rotation of the record. Rotation of the
+   record is mapped to 1:1 with the virtual phone. Requires PyGame.
+
+* Extending
+  Broadcasting velocity information over UDP makes it incredibly easy
+  to build out new applications on top of this. Try using a bit of
+  AppleScript (as in =spotifycontrol.py=) to control almost anything
+  on your Mac.
+
+  =skeleton.py= is a good starting point for building new apps. It
+  demonstrates listening for velocity data, and using that to run a
+  state machine detecting qualitative record movement
+  (ie. fast-forward, forward, stopped, reverse).
